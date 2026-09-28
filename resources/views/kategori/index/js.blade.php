@@ -39,19 +39,25 @@
             success: function(results) {
                 var rows = [];
 
-                $.each(results.data, function(index, item) {
-                    var btnView = '<a href="{{ url("kategori/view") }}/' + encodeURIComponent(item.kode) + '" class="btn btn-primary">View</a>';
-                    var btnEdit = '<a href="{{ url("kategori/form/edit") }}/' + item.id + '" class="btn btn-primary">Edit</a>';
+            $.each(results.data, function(index, item) {
+                var btnView = '<a href="{{ url("kategori/view") }}/' + encodeURIComponent(item.kode) + '" class="btn btn-primary">View</a>';
+                var btnEdit = '<a href="{{ url("kategori/form/edit") }}/' + item.id + '" class="btn btn-primary">Edit</a>';
 
-                    rows.push([
-                        item.id,
-                        esc(item.kode),
-                        esc(item.nama),
-                        item.jumlah_item,
-                        btnView,
-                        btnEdit
-                    ]);
-                });
+                // pesan konfirmasi berbeda jika kategori masih dipakai item
+                var pesan = item.jumlah_item > 0
+                    ? 'Kategori ini dipakai oleh ' + item.jumlah_item + ' item. Tetap hapus?'
+                    : 'Yakin ingin menghapus kategori ini?';
+                var btnDelete = '<a href="{{ url("kategori/delete") }}/' + item.id + '" class="btn btn-danger" onclick="return confirm(\'' + pesan + '\')">Hapus</a>';
+
+                rows.push([
+                    item.id,
+                    esc(item.kode),
+                    esc(item.nama),
+                    item.jumlah_item,
+                    btnView,
+                    btnEdit + ' ' + btnDelete
+                ]);
+            });
 
                 dataTableObj.rows.add(rows).draw();
                 $('#loading-filter').hide();
