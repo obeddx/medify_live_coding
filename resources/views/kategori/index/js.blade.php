@@ -8,7 +8,7 @@
             searching: false,
             order: [[0, 'desc']],
             columnDefs: [
-                { orderable: false, targets: [1, 4, 9, 10] } // foto, kategori, view, aksi
+                { orderable: false, targets: [4, 5] }
             ]
         });
         getData()
@@ -18,7 +18,6 @@
         getData()
     })
 
-    // escape HTML agar aman dari XSS
     function esc(text) {
         return $('<div>').text(text == null ? '' : text).html();
     }
@@ -29,45 +28,26 @@
         dataTableObj.clear().draw();
 
         $.ajax({
-            url: '{{ url("master-items/search") }}',
+            url: '{{ url("kategori/search") }}',
             dataType: 'json',
             tryCount: 0,
             retryLimit: 3,
             data: {
                 kode: $('#filter-kode').val(),
-                nama: $('#filter-nama').val(),
-                kategori_id: $('#filter-kategori').val(),
-                hargamin: $('#filter-harga-min').val(),
-                hargamax: $('#filter-harga-max').val()
+                nama: $('#filter-nama').val()
             },
             success: function(results) {
                 var rows = [];
 
                 $.each(results.data, function(index, item) {
-                    var foto = item.foto_url
-                        ? '<img src="' + esc(item.foto_url) + '" width="50" class="img-thumbnail">'
-                        : '-';
+                    var btnView = '<a href="{{ url("kategori/view") }}/' + encodeURIComponent(item.kode) + '" class="btn btn-primary">View</a>';
+                    var btnEdit = '<a href="{{ url("kategori/form/edit") }}/' + item.id + '" class="btn btn-primary">Edit</a>';
 
-                    var kategori = '';
-                    $.each(item.kategoris, function(i, k) {
-                        kategori += '<span class="badge bg-info text-dark me-1">' + esc(k.nama) + '</span>';
-                    });
-                    if (kategori == '') kategori = '-';
-
-                    var btnView = '<a href="{{ url("master-items/view") }}/' + encodeURIComponent(item.kode) + '" class="btn btn-primary">View</a>';
-                    var btnEdit = '<a href="{{ url("master-items/form/edit") }}/' + item.id + '" class="btn btn-primary">Edit</a>';
-
-                    // urutan harus sama dengan <th> di table.blade.php
                     rows.push([
                         item.id,
-                        foto,
                         esc(item.kode),
                         esc(item.nama),
-                        kategori,
-                        esc(item.jenis),
-                        item.harga_beli,
-                        item.harga_jual,
-                        esc(item.supplier),
+                        item.jumlah_item,
                         btnView,
                         btnEdit
                     ]);
