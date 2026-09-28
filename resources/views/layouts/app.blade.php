@@ -50,6 +50,14 @@
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                         @endif
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('master-items*') ? 'active' : '' }}"
+                            href="{{ url('master-items') }}">Master Items</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('kategori*') ? 'active' : '' }}"
+                            href="{{ url('kategori') }}">Kategori</a>
+                        </li>
                         @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

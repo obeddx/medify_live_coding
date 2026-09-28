@@ -5,9 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ $method == 'edit' ? 'Edit' : 'Tambah' }} Master Item</div>
+                <div class="card-header">{{ $method == 'edit' ? 'Edit' : 'Tambah' }} Kategori</div>
                 <div class="card-body">
-                    @include('master_items.form.form')
+                    @include('kategori.form.form')
                 </div>
             </div>
         </div>
